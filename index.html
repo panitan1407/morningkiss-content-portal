@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Kiss Beyond — Cloud SEO/AIO Content Portal (GitHub Sync)</title>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e; --gold:#e3b341; --green:#238636; --green-bg:rgba(46,160,67,0.16); --warn-bg:rgba(210,153,34,0.22); --purple:#a371f7; --blue:#1f6feb; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Segoe UI', system-ui, sans-serif; background:var(--bg); color:var(--text); line-height:1.45; padding-bottom:80px; }
+  header { position:sticky; top:0; z-index:40; background:rgba(13,17,23,0.97); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); padding:12px 20px; }
+  .top-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  h1 { margin:0; font-size:17px; color:var(--gold); }
+  .stats { font-size:12px; color:var(--muted); margin-top:3px; }
+  .stats b { color:#fff; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; align-items:center; }
+  input[type=search], select { background:#0d1117; border:1px solid var(--border); color:#fff; padding:6px 10px; border-radius:6px; font-size:12.5px; }
+  .btn { background:var(--green); color:#fff; border:none; padding:7px 12px; border-radius:6px; font-weight:600; cursor:pointer; font-size:12.5px; }
+  .btn-gold { background:var(--gold); color:#111; }
+  .btn-blue { background:var(--blue); color:#fff; }
+  .btn-purple { background:#8957e5; color:#fff; }
+  .btn-ghost { background:#21262d; color:#e6edf3; border:1px solid var(--border); }
+  .btn-xs { background:#21262d; color:#c9d1d9; border:1px solid var(--border); padding:4px 8px; border-radius:6px; cursor:pointer; font-size:11.5px; }
+  main { max-width:1460px; margin:16px auto; padding:0 16px; }
+  .panel { background:#161b22; border:1px solid #3d331d; border-left:4px solid var(--gold); border-radius:8px; padding:14px 16px; margin-bottom:16px; font-size:12.5px; }
+  .panel h2 { margin:0 0 8px; font-size:15px; color:var(--gold); }
+  .gh-bar { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:8px; margin-top:8px; }
+  .ed-input, .ed-area { width:100%; background:#0d1117; border:1px solid #30363d; color:#fff; padding:6px 9px; border-radius:6px; font-size:12.5px; font-family:inherit; }
+  .ed-input:focus, .ed-area:focus { outline:none; border-color:var(--gold); }
+  .svc-card { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:16px; overflow:hidden; }
+  .svc-card.is-dup { border-color:#7d4e15; }
+  .svc-card.is-edited { border-color:var(--purple); box-shadow:0 0 0 1px rgba(163,113,247,0.35); }
+  .svc-card.unchecked { opacity:0.52; }
+  .svc-head { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 14px; background:#1c2128; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .svc-meta { font-size:12px; color:var(--muted); }
+  .gold { color:var(--gold); }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:5px; }
+  .tag { font-size:11px; padding:2px 8px; border-radius:999px; font-weight:600; }
+  .tag-warn { background:var(--warn-bg); color:#f2cc60; border:1px solid #9e6a03; }
+  .tag-new { background:var(--green-bg); color:#7ee787; border:1px solid #238636; }
+  .tag-safe { background:rgba(56,139,253,0.15); color:#79c0ff; border:1px solid #1f6feb; }
+  .tag-dup { background:rgba(248,81,73,0.15); color:#ff7b72; border:1px solid #da3633; }
+  .tag-edited { background:rgba(163,113,247,0.22); color:#d2a8ff; border:1px solid var(--purple); }
+  .approve-box { display:flex; align-items:center; gap:6px; background:#0d1117; border:1px solid var(--gold); padding:5px 11px; border-radius:999px; cursor:pointer; font-size:12.5px; font-weight:600; }
+  .branch-bar { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:9px 14px; background:#12161d; border-bottom:1px solid var(--border); }
+  .b-title { font-size:12px; font-weight:700; color:#79c0ff; }
+  .b-list { display:flex; flex-wrap:wrap; gap:6px; }
+  .b-pill { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:999px; border:1px solid var(--border); background:#0d1117; font-size:12px; cursor:pointer; user-select:none; }
+  .b-pill:has(input:checked) { background:rgba(46,160,67,0.2); border-color:#2ea043; color:#aff5b4; font-weight:600; }
+  .diff-grid { display:grid; grid-template-columns:1fr 1.35fr; }
+  @media (max-width:960px) { .diff-grid { grid-template-columns:1fr; } }
+  .col { padding:12px 14px; font-size:12.5px; }
+  .col-orig { background:#13171e; border-right:1px solid var(--border); }
+  .col-opt { background:#101a14; }
+  .col-label { font-size:11px; text-transform:uppercase; font-weight:700; margin-bottom:8px; color:var(--muted); }
+  .col-opt .col-label { color:#7ee787; }
+  .field { margin-bottom:7px; }
+  .field > span { color:var(--muted); font-weight:600; }
+  .desc-readonly { margin-top:4px; background:rgba(0,0,0,0.28); border:1px solid var(--border); padding:8px; border-radius:6px; white-space:pre-wrap; max-height:220px; overflow-y:auto; font-size:12px; }
+  .ed-group { margin-bottom:8px; }
+  .ed-group label { display:block; font-size:11.5px; color:#c9d1d9; margin-bottom:3px; font-weight:600; }
+  .seo-panel { margin-top:8px; padding:10px; background:#0d1117; border:1px dashed #238636; border-radius:6px; }
+  .faq-item { margin-bottom:6px; padding-bottom:6px; border-bottom:1px solid #21262d; }
+  .faq-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .faq-item input { margin-bottom:4px; color:#f2cc60; font-weight:600; }
+  mark.hl-new { background:rgba(46,160,67,0.35); color:#aff5b4; padding:1px 5px; border-radius:3px; font-weight:600; font-size:10.5px; }
+  .reason-bar { padding:10px 14px; background:#181c24; border-top:1px solid var(--border); font-size:12px; }
+  .reason-title { font-weight:700; color:var(--gold); margin-bottom:4px; }
+  .reason-bar ul { margin:0 0 8px; padding-left:18px; color:#c9d1d9; }
+  .muted { color:var(--muted); }
+  code { background:rgba(110,118,129,0.25); padding:1px 5px; border-radius:4px; font-size:11.5px; }
+  #toast { position:fixed; bottom:18px; right:18px; background:var(--green); color:#fff; padding:11px 16px; border-radius:8px; display:none; font-weight:600; z-index:60; box-shadow:0 6px 20px rgba(0,0,0,0.4); }
+</style>
+</head>
+<body>
+<header>
+  <div class="top-row">
+    <div>
+      <h1>Morning Kiss Beyond — Cloud SEO/AIO Content Portal (GitHub Direct Save)</h1>
+      <div class="stats">
+        ทั้งหมด <b id="totalCnt">0</b> | อนุมัติแล้ว <b id="approvedCnt" class="gold">0</b> | แก้ไขแล้ว <b id="editedCnt" style="color:#d2a8ff;">0</b> • <span id="saveStatus" style="color:#7ee787;">กำลังโหลดข้อมูล...</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <button class="btn btn-purple" onclick="saveToGitHub()">☁️ บันทึกขึ้น GitHub (Save Online)</button>
+      <button class="btn btn-blue" onclick="toggleGhSettings()">⚙️ ตั้งค่า GitHub Sync</button>
+      <button class="btn btn-gold" onclick="exportFinalCsv()">📊 Export Excel CSV</button>
+      <button class="btn btn-ghost" onclick="exportProgressJson()">💾 Export JSON</button>
+      <label class="btn btn-ghost" style="cursor:pointer;">📂 Import JSON<input type="file" accept=".json" onchange="importProgressJson(event)" style="display:none;"></label>
+    </div>
+  </div>
+  <div class="controls">
+    <input type="search" id="searchBox" placeholder="ค้นหาชื่อบริการ / Fresha ID..." oninput="applyFilters()" style="min-width:220px;">
+    <select id="catFilter" onchange="applyFilters()"><option value="">ทุกหมวดหมู่ (7 หมวด)</option></select>
+    <select id="flagFilter" onchange="applyFilters()">
+      <option value="">แสดงทุกสถานะ</option>
+      <option value="edited">✏️ เฉพาะที่แก้ไขแล้ว (Edited)</option>
+      <option value="approved">✅ เฉพาะที่อนุมัติแล้ว</option>
+      <option value="empty">เฉพาะที่เดิมไม่มีคำอธิบาย</option>
+      <option value="dup">⚠️ เฉพาะที่ซ้ำข้ามหมวด</option>
+    </select>
+    <button class="btn-xs" onclick="reloadFromGitHub()">🔄 ดึงข้อมูลล่าสุดจาก GitHub</button>
+  </div>
+</header>
+
+<main>
+  <section id="ghSettingsPanel" class="panel" style="display:none;">
+    <h2>⚙️ ตั้งค่าการบันทึกขึ้น GitHub โดยตรง (ทำครั้งเดียวต่อเครื่อง — เก็บไว้ในเบราว์เซอร์ของคุณเท่านั้น)</h2>
+    <div class="muted">เมื่อตั้งค่าแล้ว คุณหรือภรรยาแก้เสร็จกดปุ่ม <b>☁️ บันทึกขึ้น GitHub</b> ข้อมูลใน <code>data/services.json</code> จะอัปเดตทันที เปิดจากเครื่องไหนก็ได้ข้อมูลล่าสุดตรงกัน 100%</div>
+    <div class="gh-bar">
+      <input type="text" id="ghOwner" class="ed-input" placeholder="GitHub Username (เช่น panitan-mk)">
+      <input type="text" id="ghRepo" class="ed-input" placeholder="Repository Name (เช่น morningkiss-content-portal)">
+      <input type="text" id="ghBranch" class="ed-input" placeholder="Branch (เช่น main)" value="main">
+      <input type="text" id="ghEditor" class="ed-input" placeholder="ชื่อผู้แก้ไข (เช่น Panitan หรือ Wife)">
+      <input type="password" id="ghToken" class="ed-input" placeholder="GitHub Fine-Grained Token (Contents: Read & Write)">
+      <button class="btn" onclick="saveGhConfig()">บันทึกการตั้งค่า</button>
+    </div>
+  </section>
+
+  <section class="panel" style="border-left-color:#2ea043;">
+    <h2>🚀 วิธีทำงานร่วมกัน (คุณ + ภรรยา) & การส่งขึ้นเว็บใหม่ (morningkissbeyond.test-zago.nd.co.th)</h2>
+    <div style="color:#c9d1d9;">
+      1. <b>แก้ไข & บันทึกออนไลน์:</b> คลิกแก้ไขประโยค/เลือกสาขาได้ทุกช่อง ระบบ Auto-Save ในเครื่องทันที และกด <b>☁️ บันทึกขึ้น GitHub</b> เพื่ออัปเดตข้อมูลกลางให้ภรรยาเปิดดู/แก้ต่อจากมือถือหรือคอมเครื่องไหนก็ได้<br>
+      2. <b>การส่งขึ้นเว็บใหม่:</b> เนื่องจากระบบหลังบ้าน NetDesign (<code>/admin</code>) มีระบบป้องกันความปลอดภัย (CORS + Admin Login Session) จึงไม่สามารถยิงข้อมูลตรงจากหน้า GitHub Pages เข้าไปได้โดยไม่มี API Key — เมื่อคุณและภรรยาตรวจอนุมัติและกด <b>☁️ บันทึกขึ้น GitHub</b> เสร็จแล้ว เพียงบอกในแชทว่า <b>"ดึงจาก GitHub ขึ้นเว็บใหม่ได้เลย"</b> ระบบจะอ่านไฟล์ <code>data/services.json</code> ล่าสุดแล้วนำไปลงให้ครบทุกตัวอักษรอย่างปลอดภัย 100% ครับ
+    </div>
+  </section>
+
+  <div id="list">กำลังโหลดรายการบริการทั้งหมด...</div>
+</main>
+<div id="toast"></div>
+
+<script>
+const LOCAL_KEY = 'mk_cloud_portal_draft_v3';
+const GH_CFG_KEY = 'mk_cloud_portal_gh_cfg_v3';
+let STATE = null;
+let BRANCHES = [];
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showToast(msg, isErr=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isErr ? '#da3633' : '#238636';
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3600);
+}
+function toggleGhSettings() {
+  const p = document.getElementById('ghSettingsPanel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+function loadGhConfig() {
+  try {
+    const cfg = JSON.parse(localStorage.getItem(GH_CFG_KEY) || '{}');
+    if (cfg.owner) document.getElementById('ghOwner').value = cfg.owner;
+    if (cfg.repo) document.getElementById('ghRepo').value = cfg.repo;
+    if (cfg.branch) document.getElementById('ghBranch').value = cfg.branch;
+    if (cfg.editor) document.getElementById('ghEditor').value = cfg.editor;
+    if (cfg.token) document.getElementById('ghToken').value = cfg.token;
+    return cfg;
+  } catch { return {}; }
+}
+function saveGhConfig() {
+  const cfg = {
+    owner: document.getElementById('ghOwner').value.trim(),
+    repo: document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim() || 'main',
+    editor: document.getElementById('ghEditor').value.trim() || 'Editor',
+    token: document.getElementById('ghToken').value.trim(),
+  };
+  localStorage.setItem(GH_CFG_KEY, JSON.stringify(cfg));
+  showToast('บันทึกการตั้งค่า GitHub เรียบร้อย! พร้อมกด ☁️ บันทึกขึ้น GitHub ได้ทันที');
+  toggleGhSettings();
+}
+
+async function init() {
+  loadGhConfig();
+  try {
+    const res = await fetch('./data/services.json?t=' + Date.now());
+    STATE = await res.json();
+    BRANCHES = STATE.branches_catalog || [];
+    // Overlay unsaved local draft if newer
+    const localRaw = localStorage.getItem(LOCAL_KEY);
+    if (localRaw) {
+      const localObj = JSON.parse(localRaw);
+      if (localObj && localObj.items && localObj.updated_at > (STATE.updated_at || '')) {
+        STATE = localObj;
+        document.getElementById('saveStatus').textContent = '✓ โหลดฉบับร่างที่แก้ค้างไว้ในเครื่อง (' + STATE.updated_at.slice(0,16).replace('T',' ') + ')';
+      } else {
+        document.getElementById('saveStatus').textContent = '✓ โหลดข้อมูลล่าสุดจาก GitHub แล้ว (' + (STATE.updated_by || 'Cloud') + ')';
+      }
+    } else {
+      document.getElementById('saveStatus').textContent = '✓ โหลดข้อมูลล่าสุดจาก GitHub แล้ว';
+    }
+    populateCatFilter();
+    renderAll();
+  } catch (err) {
+    document.getElementById('list').innerHTML = `<div class="panel">⚠️ กรุณาเปิดผ่าน GitHub Pages หรือ Web Server (ไม่สามารถ fetch <code>data/services.json</code> จาก <code>file://</code> โดยตรงได้) — Error: ${esc(err.message)}</div>`;
+  }
+}
+
+function populateCatFilter() {
+  const sel = document.getElementById('catFilter');
+  const cats = [...new Set(STATE.items.map(x => x.web_category))].sort();
+  sel.innerHTML = '<option value="">ทุกหมวดหมู่ (' + cats.length + ' หมวด)</option>' + cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+}
+
+function renderAll() {
+  const list = document.getElementById('list');
+  list.innerHTML = STATE.items.map((r, i) => {
+    const bPills = BRANCHES.map(b => {
+      const chk = (r.branches || []).includes(b.key) ? 'checked' : '';
+      return `<label class="b-pill"><input type="checkbox" data-i="${i}" data-b="${b.key}" ${chk} onchange="onBranch(this)"><span>${esc(b.label)}</span></label>`;
+    }).join('');
+    const faqsHtml = (r.faqs || []).map((f, fi) => `
+      <div class="faq-item">
+        <input type="text" class="ed-input" value="${esc(f.q)}" oninput="onFaq(${i},${fi},'q',this.value)" placeholder="Question ${fi+1}">
+        <textarea class="ed-area" rows="2" oninput="onFaq(${i},${fi},'a',this.value)" placeholder="Answer ${fi+1}">${esc(f.a)}</textarea>
+      </div>`).join('');
+    const reasonsHtml = (r.edit_reasons || []).map(x => `<li>${esc(x)}</li>`).join('');
+    return `
+    <article class="svc-card ${r.is_dup ? 'is-dup' : ''} ${r.edited ? 'is-edited' : ''} ${r.approved ? '' : 'unchecked'}" data-i="${i}" data-cat="${esc(r.web_category)}">
+      <div class="svc-head">
+        <div>
+          <div class="svc-meta">#${r.idx} • Fresha ID: <code>${esc(r.service_id)}</code> • หมวดเว็บ: <b>${esc(r.web_category)}</b> • <b class="gold">${Number(r.start_price).toLocaleString()} THB</b> (${esc(r.dur_str)})</div>
+          <div class="tags">
+            ${r.title_changed ? '<span class="tag tag-warn">ปรับชื่อ SEO</span>' : ''}
+            ${r.was_empty_desc ? '<span class="tag tag-new">เพิ่มคำอธิบาย (เดิมว่าง)</span>' : '<span class="tag tag-safe">🛡️ ขั้นตอนเดิม 100%</span>'}
+            ${r.is_dup ? '<span class="tag tag-dup">⚠️ ซ้ำข้ามหมวด</span>' : ''}
+            <span class="tag tag-edited" style="display:${r.edited ? 'inline-block' : 'none'}">✏️ แก้ไขแล้ว</span>
+          </div>
+        </div>
+        <label class="approve-box">
+          <input type="checkbox" ${r.approved ? 'checked' : ''} onchange="onField(${i},'approved',this.checked)">
+          <span>อนุมัติขึ้นเว็บ</span>
+        </label>
+      </div>
+      <div class="branch-bar">
+        <span class="b-title">📍 สาขาที่ให้บริการ:</span>
+        <div class="b-list">${bPills}</div>
+      </div>
+      <div class="diff-grid">
+        <div class="col col-orig">
+          <div class="col-label">Original Fresha (ต้นฉบับ)</div>
+          <div class="field"><span>ชื่อเดิม:</span> ${esc(r.orig_name)}</div>
+          <div class="field"><span>หมวด Fresha:</span> ${esc(r.fresha_category)}</div>
+          <div class="field"><span>ราคา & ตัวเลือก (คงเดิม 100%):</span> <b class="gold">${esc(r.var_orig)}</b></div>
+          <div class="field"><span>คำอธิบายต้นฉบับ:</span><div class="desc-readonly">${r.orig_desc ? esc(r.orig_desc) : '<em class="muted">(ว่างใน Fresha)</em>'}</div></div>
+        </div>
+        <div class="col col-opt">
+          <div class="col-label">✏️ ฉบับขึ้นเว็บ (แก้ไขได้ทุกช่อง — Auto-Save)</div>
+          <div class="ed-group"><label>ชื่อบริการบนเว็บ (H1)</label><input type="text" class="ed-input" value="${esc(r.name)}" oninput="onField(${i},'name',this.value)"></div>
+          <div class="ed-group"><label>Clean URL Slug</label><input type="text" class="ed-input" value="${esc(r.slug)}" oninput="onField(${i},'slug',this.value)"></div>
+          <div class="ed-group"><label>รายละเอียดและขั้นตอนบริการ (Detail)</label><textarea class="ed-area" rows="5" oninput="onField(${i},'desc',this.value)">${esc(r.desc)}</textarea></div>
+          <div class="seo-panel">
+            <div class="ed-group"><label><mark class="hl-new">SEO Meta Title</mark></label><input type="text" class="ed-input" value="${esc(r.seo_title)}" oninput="onField(${i},'seo_title',this.value)"></div>
+            <div class="ed-group"><label><mark class="hl-new">SEO Meta Description</mark></label><textarea class="ed-area" rows="2" oninput="onField(${i},'seo_desc',this.value)">${esc(r.seo_desc)}</textarea></div>
+            <div class="ed-group"><label><mark class="hl-new">SEO Keywords</mark></label><input type="text" class="ed-input" value="${esc(r.seo_kw)}" oninput="onField(${i},'seo_kw',this.value)"></div>
+            <div class="ed-group"><label><mark class="hl-new">Per-Service FAQ (3 ข้อมาตรฐาน AIO)</mark></label>${faqsHtml}</div>
+          </div>
+        </div>
+      </div>
+      <div class="reason-bar">
+        <div class="reason-title">💡 เหตุผลที่ปรับปรุง:</div>
+        <ul>${reasonsHtml}</ul>
+        <input type="text" class="ed-input" value="${esc(r.comment || '')}" placeholder="หมายเหตุสื่อสารระหว่างคุณ / ภรรยา..." oninput="onField(${i},'comment',this.value)">
+      </div>
+    </article>`;
+  }).join('');
+  recount();
+}
+
+function touchLocal(i) {
+  STATE.items[i].edited = true;
+  STATE.updated_at = new Date().toISOString();
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE));
+  const card = document.querySelector(`article[data-i="${i}"]`);
+  if (card) {
+    card.classList.add('is-edited');
+    card.classList.toggle('unchecked', !STATE.items[i].approved);
+    const b = card.querySelector('.tag-edited');
+    if (b) b.style.display = 'inline-block';
+  }
+  recount();
+  document.getElementById('saveStatus').textContent = '✓ Auto-Save ในเครื่องแล้ว (อย่าลืมกด ☁️ บันทึกขึ้น GitHub เมื่อแก้เสร็จ)';
+}
+
+function onField(i, key, val) { STATE.items[i][key] = val; touchLocal(i); }
+function onFaq(i, fi, key, val) { STATE.items[i].faqs[fi][key] = val; touchLocal(i); }
+function onBranch(chk) {
+  const i = Number(chk.dataset.i);
+  const b = chk.dataset.b;
+  const set = new Set(STATE.items[i].branches || []);
+  if (chk.checked) set.add(b); else set.delete(b);
+  STATE.items[i].branches = [...set];
+  touchLocal(i);
+}
+
+function recount() {
+  document.getElementById('totalCnt').textContent = STATE.items.length;
+  document.getElementById('approvedCnt').textContent = STATE.items.filter(x => x.approved).length;
+  document.getElementById('editedCnt').textContent = STATE.items.filter(x => x.edited).length;
+}
+
+function applyFilters() {
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const cat = document.getElementById('catFilter').value;
+  const flag = document.getElementById('flagFilter').value;
+  document.querySelectorAll('.svc-card').forEach(card => {
+    const r = STATE.items[Number(card.dataset.i)];
+    const hay = `${r.service_id} ${r.orig_name} ${r.name} ${r.desc} ${r.comment}`.toLowerCase();
+    const okQ = !q || hay.includes(q);
+    const okCat = !cat || r.web_category === cat;
+    let okFlag = true;
+    if (flag === 'edited') okFlag = !!r.edited;
+    else if (flag === 'approved') okFlag = !!r.approved;
+    else if (flag === 'empty') okFlag = !!r.was_empty_desc;
+    else if (flag === 'dup') okFlag = !!r.is_dup;
+    card.style.display = (okQ && okCat && okFlag) ? '' : 'none';
+  });
+}
+
+async function saveToGitHub() {
+  const cfg = loadGhConfig();
+  if (!cfg.owner || !cfg.repo || !cfg.token) {
+    toggleGhSettings();
+    showToast('กรุณากรอก GitHub Username, Repo และ Token ก่อนบันทึกครั้งแรกครับ', true);
+    return;
+  }
+  const path = 'data/services.json';
+  const apiUrl = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`;
+  document.getElementById('saveStatus').textContent = '⏳ กำลังบันทึกขึ้น GitHub...';
+  try {
+    const getRes = await fetch(apiUrl + `?ref=${cfg.branch}`, {
+      headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (!getRes.ok) throw new Error('อ่านไฟล์เดิมจาก GitHub ไม่สำเร็จ (' + getRes.status + ')');
+    const fileInfo = await getRes.json();
+    STATE.updated_at = new Date().toISOString();
+    STATE.updated_by = cfg.editor || 'Editor';
+    const jsonText = JSON.stringify(STATE, null, 2);
+    const bytes = new TextEncoder().encode(jsonText);
+    let bin = '';
+    bytes.forEach(b => bin += String.fromCharCode(b));
+    const b64 = btoa(bin);
+
+    const putRes = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Update services content by ${STATE.updated_by} (${STATE.items.filter(x=>x.approved).length} approved)`,
+        content: b64,
+        sha: fileInfo.sha,
+        branch: cfg.branch
+      })
+    });
+    if (!putRes.ok) {
+      const e = await putRes.json();
+      throw new Error(e.message || putRes.status);
+    }
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE));
+    document.getElementById('saveStatus').textContent = '☁️ บันทึกขึ้น GitHub สำเร็จแล้ว! (' + new Date().toLocaleTimeString('th-TH') + ')';
+    showToast('☁️ บันทึกขึ้น GitHub เรียบร้อย! ภรรยาเปิดเว็บนี้จะเห็นข้อมูลล่าสุดทันที');
+  } catch (err) {
+    document.getElementById('saveStatus').textContent = '⚠️ บันทึกขึ้น GitHub ไม่สำเร็จ';
+    showToast('Error: ' + err.message, true);
+  }
+}
+
+async function reloadFromGitHub() {
+  if (!confirm('ต้องการดึงข้อมูลล่าสุดจาก GitHub มาทับฉบับร่างในเครื่องนี้ใช่ไหม?')) return;
+  localStorage.removeItem(LOCAL_KEY);
+  location.reload();
+}
+
+function exportProgressJson() {
+  const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'morningkiss_services_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+function importProgressJson(ev) {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const rd = new FileReader();
+  rd.onload = e => {
+    try {
+      const obj = JSON.parse(e.target.result);
+      if (obj.items) { STATE = obj; localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE)); renderAll(); showToast('โหลดไฟล์ JSON สำเร็จ!'); }
+    } catch (err) { showToast('ไฟล์ไม่ถูกต้อง: ' + err.message, true); }
+  };
+  rd.readAsText(f);
+}
+
+function csvEsc(v) { return `"${String(v ?? '').replace(/"/g,'""')}"`; }
+function exportFinalCsv() {
+  const hdr = ['Service ID','Web Category','Approved','Edited','Branches','Name','Slug','Price','Duration','Detail','SEO Title','SEO Desc','SEO Keywords','FAQ1','FAQ2','FAQ3','Comment'];
+  const rows = [hdr.map(csvEsc).join(',')];
+  STATE.items.forEach(r => {
+    const f = r.faqs || [];
+    rows.push([
+      r.service_id, r.web_category, r.approved ? 'APPROVED' : 'SKIP', r.edited ? 'EDITED' : 'DEFAULT',
+      (r.branches||[]).join(', '), r.name, r.slug, r.start_price, r.dur_str, r.desc,
+      r.seo_title, r.seo_desc, r.seo_kw,
+      f[0]?`Q: ${f[0].q} | A: ${f[0].a}`:'', f[1]?`Q: ${f[1].q} | A: ${f[1].a}`:'', f[2]?`Q: ${f[2].q} | A: ${f[2].a}`:'', r.comment
+    ].map(csvEsc).join(','));
+  });
+  const blob = new Blob(['\uFEFF' + rows.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'morningkiss_approved_final_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+}
+
+init();
+</script>
+</body>
+</html>
