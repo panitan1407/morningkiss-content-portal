@@ -175,9 +175,9 @@
       "key": "23832357_4",
       "service_id": "23832357",
       "fresha_category": "NEW! Ultimate Face & Hair Healing Therapy with Gemstone Hot & Cool Ritual",
-      "web_category": "Facial & Face Lift",
-      "is_dup": true,
-      "approved": false,
+      "web_category": "Head Spa",
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -217,7 +217,6 @@
       "edit_reasons": [
         "ลบอิโมจิ/ดอกจัน/ขีดล่าง (_) ออกจากชื่อ H1 และ Slug เพื่อให้ถูกหลัก Google SEO และดูหรูหราระดับ Luxury",
         "คงข้อความและขั้นตอนบริการเดิมจาก Fresha 100% ไม่แก้ไขรายละเอียดใดๆ",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -228,8 +227,8 @@
       "service_id": "23832340",
       "fresha_category": "NEW! Ultimate Face & Hair Healing Therapy with Gemstone Hot & Cool Ritual",
       "web_category": "Facial & Face Lift",
-      "is_dup": true,
-      "approved": false,
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -269,7 +268,6 @@
       "edit_reasons": [
         "ลบอิโมจิ/ดอกจัน/ขีดล่าง (_) ออกจากชื่อ H1 และ Slug เพื่อให้ถูกหลัก Google SEO และดูหรูหราระดับ Luxury",
         "คงข้อความและขั้นตอนบริการเดิมจาก Fresha 100% ไม่แก้ไขรายละเอียดใดๆ",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -280,8 +278,8 @@
       "service_id": "23832333",
       "fresha_category": "NEW! Ultimate Face & Hair Healing Therapy with Gemstone Hot & Cool Ritual",
       "web_category": "Facial & Face Lift",
-      "is_dup": true,
-      "approved": false,
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -321,7 +319,6 @@
       "edit_reasons": [
         "ลบอิโมจิ/ดอกจัน/ขีดล่าง (_) ออกจากชื่อ H1 และ Slug เพื่อให้ถูกหลัก Google SEO และดูหรูหราระดับ Luxury",
         "คงข้อความและขั้นตอนบริการเดิมจาก Fresha 100% ไม่แก้ไขรายละเอียดใดๆ",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -1840,7 +1837,7 @@
       "key": "17353566_37",
       "service_id": "17353566",
       "fresha_category": "✅\"Viral Head Spa\" *Must Try, Recommend!* Signature Royal Thai",
-      "web_category": "Head Spa",
+      "web_category": "Signature Packages",
       "is_dup": false,
       "approved": true,
       "edited": false,
@@ -1891,7 +1888,7 @@
       "key": "17353541_38",
       "service_id": "17353541",
       "fresha_category": "✅\"Viral Head Spa\" *Must Try, Recommend!* Signature Royal Thai",
-      "web_category": "Head Spa",
+      "web_category": "Signature Packages",
       "is_dup": false,
       "approved": true,
       "edited": false,
@@ -1942,7 +1939,7 @@
       "key": "16728172_39",
       "service_id": "16728172",
       "fresha_category": "✅\"Viral Head Spa\" *Must Try, Recommend!* Signature Royal Thai",
-      "web_category": "Head Spa",
+      "web_category": "Signature Packages",
       "is_dup": false,
       "approved": true,
       "edited": false,
@@ -1993,7 +1990,7 @@
       "key": "16728141_40",
       "service_id": "16728141",
       "fresha_category": "✅\"Viral Head Spa\" *Must Try, Recommend!* Signature Royal Thai",
-      "web_category": "Head Spa",
+      "web_category": "Signature Packages",
       "is_dup": false,
       "approved": true,
       "edited": false,
@@ -2147,8 +2144,8 @@
       "service_id": "16727749",
       "fresha_category": "Signature *Royal Thai Nail Spa service*",
       "web_category": "Hands, Feet & Nails",
-      "is_dup": true,
-      "approved": false,
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -2188,7 +2185,6 @@
       ],
       "edit_reasons": [
         "คงข้อความและขั้นตอนบริการเดิมจาก Fresha 100% ไม่แก้ไขรายละเอียดใดๆ",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -2199,8 +2195,8 @@
       "service_id": "16724847",
       "fresha_category": "Signature *Royal Thai Nail Spa service*",
       "web_category": "Hands, Feet & Nails",
-      "is_dup": true,
-      "approved": false,
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -2240,7 +2236,6 @@
       ],
       "edit_reasons": [
         "คงข้อความและขั้นตอนบริการเดิมจาก Fresha 100% ไม่แก้ไขรายละเอียดใดๆ",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -2457,8 +2452,8 @@
       "service_id": "15806557",
       "fresha_category": "Promotion_ Most Popular Package (Value Pack)",
       "web_category": "Hands, Feet & Nails",
-      "is_dup": true,
-      "approved": false,
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -2498,7 +2493,6 @@
       ],
       "edit_reasons": [
         "เดิมไม่มีคำอธิบายใน Fresha — ร่างข้อความสั้นตามข้อเท็จจริงล้วนๆ (ไม่แต่งขั้นตอนเพิ่ม) เพื่อให้ Google/AI อ่านหน้าบริการได้",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -2715,7 +2709,7 @@
       "key": "23832226_54",
       "service_id": "23832226",
       "fresha_category": "*1+1* Special Promotion_1 Person Value Package",
-      "web_category": "Signature Packages",
+      "web_category": "Facial & Face Lift",
       "is_dup": true,
       "approved": false,
       "edited": false,
@@ -4517,8 +4511,8 @@
       "service_id": "18161388",
       "fresha_category": "Nails Extensions",
       "web_category": "Hands, Feet & Nails",
-      "is_dup": true,
-      "approved": false,
+      "is_dup": false,
+      "approved": true,
       "edited": false,
       "branches": [
         "paragon",
@@ -4558,7 +4552,6 @@
       ],
       "edit_reasons": [
         "คงข้อความและขั้นตอนบริการเดิมจาก Fresha 100% ไม่แก้ไขรายละเอียดใดๆ",
-        "⚠️ พบชื่อบริการซ้ำข้ามหมวดใน Fresha — แนะนำเปิดแค่ 1 รายการเพื่อป้องกันหน้าเว็บแย่งอันดับกันเอง (Keyword Cannibalization)",
         "คัดกรอง Keyword / Meta / 3 ข้อ FAQ ให้ตรงเฉพาะบริการนี้เท่านั้น (ไม่ใส่คำว่า Onsen/Cold Bath ในบริการที่ไม่มี)"
       ],
       "comment": ""
@@ -5023,5 +5016,14 @@
       ],
       "comment": ""
     }
+  ],
+  "categories_catalog": [
+    "Head Spa",
+    "Onsen & Hot / Cold Bath",
+    "Facial & Face Lift",
+    "Massage & Body Wellness",
+    "Hands, Feet & Nails",
+    "Signature Packages",
+    "Eyelash & Brow"
   ]
 }

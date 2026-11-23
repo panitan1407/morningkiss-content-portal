@@ -134,6 +134,7 @@ const LOCAL_KEY = 'mk_cloud_portal_draft_v3';
 const GH_CFG_KEY = 'mk_cloud_portal_gh_cfg_v3';
 let STATE = null;
 let BRANCHES = [];
+let CATEGORIES = ["Head Spa","Onsen & Hot / Cold Bath","Facial & Face Lift","Massage & Body Wellness","Hands, Feet & Nails","Signature Packages","Eyelash & Brow"];
 
 function esc(s) {
   return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -179,6 +180,7 @@ async function init() {
     const res = await fetch('./data/services.json?t=' + Date.now());
     STATE = await res.json();
     BRANCHES = STATE.branches_catalog || [];
+    if (Array.isArray(STATE.categories_catalog) && STATE.categories_catalog.length) CATEGORIES = STATE.categories_catalog;
     // Overlay unsaved local draft if newer
     const localRaw = localStorage.getItem(LOCAL_KEY);
     if (localRaw) {
@@ -218,11 +220,12 @@ function renderAll() {
         <textarea class="ed-area" rows="2" oninput="onFaq(${i},${fi},'a',this.value)" placeholder="Answer ${fi+1}">${esc(f.a)}</textarea>
       </div>`).join('');
     const reasonsHtml = (r.edit_reasons || []).map(x => `<li>${esc(x)}</li>`).join('');
+    const catSelect = `<select class="btn-xs" style="background:#0d1117;color:#79c0ff;border-color:#1f6feb;" onchange="onCategory(${i},this.value)">${CATEGORIES.map(c => `<option value="${esc(c)}" ${c===r.web_category?'selected':''}>${esc(c)}</option>`).join('')}</select>`;
     return `
     <article class="svc-card ${r.is_dup ? 'is-dup' : ''} ${r.edited ? 'is-edited' : ''} ${r.approved ? '' : 'unchecked'}" data-i="${i}" data-cat="${esc(r.web_category)}">
       <div class="svc-head">
         <div>
-          <div class="svc-meta">#${r.idx} • Fresha ID: <code>${esc(r.service_id)}</code> • หมวดเว็บ: <b>${esc(r.web_category)}</b> • <b class="gold">${Number(r.start_price).toLocaleString()} THB</b> (${esc(r.dur_str)})</div>
+          <div class="svc-meta">#${r.idx} • Fresha ID: <code>${esc(r.service_id)}</code> • หมวดเว็บ: ${catSelect} • <b class="gold">${Number(r.start_price).toLocaleString()} THB</b> (${esc(r.dur_str)})</div>
           <div class="tags">
             ${r.title_changed ? '<span class="tag tag-warn">ปรับชื่อ SEO</span>' : ''}
             ${r.was_empty_desc ? '<span class="tag tag-new">เพิ่มคำอธิบาย (เดิมว่าง)</span>' : '<span class="tag tag-safe">🛡️ ขั้นตอนเดิม 100%</span>'}
@@ -286,6 +289,12 @@ function touchLocal(i) {
 }
 
 function onField(i, key, val) { STATE.items[i][key] = val; touchLocal(i); }
+function onCategory(i, val) {
+  STATE.items[i].web_category = val;
+  const card = document.querySelector(`article[data-i="${i}"]`);
+  if (card) card.dataset.cat = val;
+  touchLocal(i);
+}
 function onFaq(i, fi, key, val) { STATE.items[i].faqs[fi][key] = val; touchLocal(i); }
 function onBranch(chk) {
   const i = Number(chk.dataset.i);
