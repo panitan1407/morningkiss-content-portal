@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Kiss Beyond — Visual Image Approval Portal (Google Drive Comparison)</title>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e; --gold:#e3b341; --green:#238636; --purple:#8957e5; --orange:#d29922; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:'Segoe UI', system-ui, sans-serif; background:var(--bg); color:var(--text); line-height:1.45; padding-bottom:80px; }
+  header { position:sticky; top:0; z-index:40; background:rgba(13,17,23,0.97); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); padding:12px 20px; }
+  .top-row { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+  h1 { margin:0; font-size:17px; color:var(--gold); }
+  .stats { font-size:12px; color:var(--muted); margin-top:3px; }
+  .stats b { color:#fff; }
+  .btn { background:var(--green); color:#fff; border:none; padding:7px 12px; border-radius:6px; font-weight:600; cursor:pointer; font-size:12.5px; text-decoration:none; display:inline-block; }
+  .btn-purple { background:var(--purple); }
+  .btn-ghost { background:#21262d; color:#e6edf3; border:1px solid var(--border); }
+  main { max-width:1360px; margin:18px auto; padding:0 16px; }
+  .sec-title { margin:24px 0 12px; font-size:16px; color:var(--gold); border-bottom:1px solid var(--border); padding-bottom:6px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:10px; margin-bottom:18px; overflow:hidden; }
+  .card.st-approve { border-color:#2ea043; box-shadow:0 0 0 1px rgba(46,160,67,0.4); }
+  .card.st-redo { border-color:#d29922; box-shadow:0 0 0 1px rgba(210,153,34,0.45); }
+  .card.st-skip { opacity:0.55; }
+  .card-head { padding:10px 14px; background:#1c2128; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  .slot { font-size:12px; color:#79c0ff; }
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:14px; }
+  @media (max-width:860px) { .pair { grid-template-columns:1fr; } }
+  .img-box { background:#0d1117; border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center; }
+  .img-box .lbl { font-size:11.5px; color:var(--muted); margin-bottom:8px; text-align:left; font-weight:600; }
+  .img-box.prop .lbl { color:#7ee787; }
+  .img-box img { max-width:100%; max-height:360px; border-radius:6px; object-fit:contain; background:#000; }
+  .card-foot { padding:12px 14px; background:#14181f; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:10px; }
+  .analysis { font-size:12.5px; color:#c9d1d9; }
+  .actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .pick { padding:7px 14px; border-radius:999px; border:1px solid var(--border); background:#0d1117; color:#c9d1d9; cursor:pointer; font-size:12.5px; font-weight:600; }
+  .pick.active-approve { background:rgba(46,160,67,0.25); border-color:#2ea043; color:#aff5b4; }
+  .pick.active-redo { background:rgba(210,153,34,0.25); border-color:#d29922; color:#f2cc60; }
+  .pick.active-skip { background:rgba(139,148,158,0.2); border-color:#8b949e; color:#e6edf3; }
+  .comment { width:100%; background:#0d1117; border:1px solid var(--border); color:#fff; padding:8px 10px; border-radius:6px; font-size:12.5px; }
+  #toast { position:fixed; bottom:18px; right:18px; background:var(--green); color:#fff; padding:11px 16px; border-radius:8px; display:none; font-weight:600; z-index:60; }
+</style>
+</head>
+<body>
+<header>
+  <div class="top-row">
+    <div>
+      <h1>🖼️ Morning Kiss Beyond — Visual Image Approval Portal (เทียบต้นฉบับ Google Drive vs ภาพขึ้นเว็บ)</h1>
+      <div class="stats">
+        ทั้งหมด <b id="totCnt">0</b> ภาพ | ✅ อนุมัติ <b id="appCnt" style="color:#7ee787;">0</b> | 🔄 ขอแก้/สร้างใหม่ <b id="redoCnt" style="color:#f2cc60;">0</b> | ⏭️ ข้าม <b id="skipCnt">0</b> • <span id="saveStatus" style="color:#7ee787;">กำลังโหลด...</span>
+      </div>
+    </div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap;">
+      <a class="btn btn-ghost" href="./index.html">📝 กลับหน้าตรวจบริการ (98)</a>
+      <button class="btn btn-purple" onclick="saveToGitHub()">☁️ บันทึกผลการตรวจรูปขึ้น GitHub</button>
+      <button class="btn" onclick="copyReport()">📋 คัดลอกสรุปส่งกลับแชท</button>
+    </div>
+  </div>
+</header>
+<main id="root">กำลังโหลดชุดภาพ...</main>
+<div id="toast"></div>
+
+<script>
+const LOCAL_KEY = 'mk_image_approval_v1';
+const GH_CFG_KEY = 'mk_cloud_portal_gh_cfg_v3';
+let STATE = null;
+
+function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg, isErr=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.background = isErr ? '#da3633' : '#238636';
+  t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3400);
+}
+
+async function init() {
+  const res = await fetch('./data/images.json?t=' + Date.now());
+  STATE = await res.json();
+  const localRaw = localStorage.getItem(LOCAL_KEY);
+  if (localRaw) {
+    const lo = JSON.parse(localRaw);
+    if (lo && lo.items && lo.updated_at > (STATE.updated_at || '')) STATE = lo;
+  }
+  document.getElementById('saveStatus').textContent = '✓ โหลดชุดภาพเทียบคู่ Google Drive แล้ว';
+  render();
+}
+
+function render() {
+  const root = document.getElementById('root');
+  let html = '', lastSec = '';
+  STATE.items.forEach((it, i) => {
+    if (it.section !== lastSec) {
+      html += `<h2 class="sec-title">${esc(it.section)}</h2>`;
+      lastSec = it.section;
+    }
+    html += `
+    <div class="card st-${esc(it.status)}" data-i="${i}">
+      <div class="card-head">
+        <div><b>${esc(it.title)}</b> <span class="slot">• ${esc(it.slot)}</span></div>
+        <div class="slot">${esc(it.id)}</div>
+      </div>
+      <div class="pair">
+        <div class="img-box">
+          <div class="lbl">📂 ${esc(it.ref_label)}</div>
+          <img src="./${esc(it.ref_img)}" loading="lazy" alt="ref">
+        </div>
+        <div class="img-box prop">
+          <div class="lbl">✨ ภาพสะอาดไร้ตัวอักษรที่เตรียมสำหรับขึ้นเว็บ</div>
+          <img src="./${esc(it.proposed_img)}" loading="lazy" alt="proposed">
+        </div>
+      </div>
+      <div class="card-foot">
+        <div class="analysis">💡 <b>แนวทางการตัดต่อ/เลือกภาพ:</b> ${esc(it.analysis)}</div>
+        <div class="actions">
+          <button class="pick ${it.status==='approve'?'active-approve':''}" onclick="setStatus(${i},'approve')">✅ อนุมัติใช้ภาพนี้</button>
+          <button class="pick ${it.status==='redo'?'active-redo':''}" onclick="setStatus(${i},'redo')">🔄 ขอแก้ / สร้างใหม่</button>
+          <button class="pick ${it.status==='skip'?'active-skip':''}" onclick="setStatus(${i},'skip')">⏭️ ข้าม (เดี๋ยวอัปโหลดเอง)</button>
+        </div>
+        <input type="text" class="comment" value="${esc(it.comment || '')}" placeholder="พิมพ์คำสั่งแก้ภาพนี้ (เช่น ขอแสงสว่างขึ้น, ขอภาพใหม่สไตล์นี้, ไม่เอาคนในภาพ)..." oninput="setComment(${i},this.value)">
+      </div>
+    </div>`;
+  });
+  root.innerHTML = html;
+  recount();
+}
+
+function saveLocal() {
+  STATE.updated_at = new Date().toISOString();
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(STATE));
+  recount();
+}
+function setStatus(i, st) { STATE.items[i].status = st; saveLocal(); render(); }
+function setComment(i, val) { STATE.items[i].comment = val; saveLocal(); }
+function recount() {
+  document.getElementById('totCnt').textContent = STATE.items.length;
+  document.getElementById('appCnt').textContent = STATE.items.filter(x => x.status==='approve').length;
+  document.getElementById('redoCnt').textContent = STATE.items.filter(x => x.status==='redo').length;
+  document.getElementById('skipCnt').textContent = STATE.items.filter(x => x.status==='skip').length;
+}
+
+async function saveToGitHub() {
+  let cfg = {};
+  try { cfg = JSON.parse(localStorage.getItem(GH_CFG_KEY) || '{}'); } catch {}
+  if (!cfg.owner || !cfg.repo || !cfg.token) {
+    showToast('กรุณาตั้งค่า Token ในหน้าหลัก (⚙️ ตั้งค่า GitHub Sync) ก่อน 1 ครั้งครับ', true);
+    return;
+  }
+  const apiUrl = `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/data/images.json`;
+  try {
+    const g = await fetch(apiUrl + `?ref=${cfg.branch||'main'}`, { headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json' } });
+    const info = await g.json();
+    const bytes = new TextEncoder().encode(JSON.stringify(STATE, null, 2));
+    let bin = ''; bytes.forEach(b => bin += String.fromCharCode(b));
+    const p = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': `Bearer ${cfg.token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `Update image approvals by ${cfg.editor||'Owner'}`, content: btoa(bin), sha: info.sha, branch: cfg.branch||'main' })
+    });
+    if (!p.ok) throw new Error((await p.json()).message || p.status);
+    showToast('☁️ บันทึกผลการตรวจรูปขึ้น GitHub เรียบร้อย!');
+  } catch (e) { showToast('Error: ' + e.message, true); }
+}
+
+function copyReport() {
+  const lines = STATE.items.map(x => `[${x.status.toUpperCase()}] ${x.title} (${x.id})${x.comment ? ' | หมายเหตุ: ' + x.comment : ''}`);
+  navigator.clipboard.writeText("สรุปผลการตรวจอนุมัติรูปภาพ:\n" + lines.join('\n'));
+  showToast('คัดลอกสรุปผลการตรวจรูปแล้ว! นำไปวางในแชทได้เลยครับ');
+}
+
+init();
+</script>
+</body>
+</html>
